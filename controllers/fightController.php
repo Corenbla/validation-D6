@@ -2,15 +2,14 @@
 
 include '../models/Database.php';
 
-//session_start();
-
+session_start();
 
 if (count($_POST) != 2) {
-    header('Location: /');
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit();
 }
 
-$_SESSION['fighters'] == [];
+$_SESSION['fighters'] = [];
 
 foreach ($_POST as $characterId) {
     $character = Database::getOneCharacter($characterId);
@@ -18,10 +17,5 @@ foreach ($_POST as $characterId) {
 }
 
 $_SESSION['fighting'] = true;
-header('Location: /');
+header('Location: ' . $_SERVER['HTTP_REFERER']);
 exit();
-
-
-
-
-

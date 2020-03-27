@@ -1,35 +1,39 @@
-<?php 
+<?php
+
 namespace classes;
 
-class warrior extends Character
+class Warrior extends Character
 {
-    private $boost = False;
+    private $boost = false;
 
-    public function attack(Character $target) {
+    public function attack(Character $target)
+    {
         $rand = rand(1, 10);
-        if ($rand <= 8 && $this->boost) {
+        if ($rand <= 8 || $this->boost) {
             return $this->sword($target);
-        } else if ($rand > 8) {
+        } else {
             return $this->boost();
         }
     }
 
-    private function sword(Character $target) {
+    private function sword(Character $target)
+    {
         $attack = rand(5, 15);
         if ($this->boost) {
             $rand = rand(17, 30);
             $rand /= 10;
             $attack *= $rand;
-            $this->boost = False;
+            $this->boost = false;
         }
-        $target->setlifePoints();
-        $status = "$this->name attaque {$target->name}! Il reste {$target->getLifePoints()} à {$target->name} !";
-        return $status;
+        $target->setlifePoints($attack);
+
+        return "$this->name attaque {$target->name}! Il reste {$target->getLifePoints()} à {$target->name} !";
     }
 
-    private function boost() {
-        $this->boost = True;
-        $status = "{$this->name} se concentre pour taper plus fort!";
-        return $status;
+    private function boost()
+    {
+        $this->boost = true;
+
+        return "{$this->name} se concentre pour taper plus fort!";
     }
 }
