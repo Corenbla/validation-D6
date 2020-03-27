@@ -2,10 +2,11 @@
 
 namespace classes;
 
-class Character
+abstract class Character
 {
-    protected $lifePoints = 100;
-    public static $pv = 350;
+    const MAX_LIFEPOINTS = 100;
+
+    protected $lifePoints = self::MAX_LIFEPOINTS;
     public $name;
     public $magicPoints = 10;
 
@@ -28,4 +29,6 @@ class Character
 
         return;
     }
+
+    abstract public function attack(Character $target);
 }
