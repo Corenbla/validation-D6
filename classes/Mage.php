@@ -2,10 +2,10 @@
 
 namespace classes;
 
+use classes\Status\Buff;
+
 class Mage extends Character
 {
-    private $shield = false;
-
     public function __construct(string $name)
     {
         parent::__construct($name);
@@ -15,7 +15,7 @@ class Mage extends Character
     public function attack(Character $target)
     {
         $rand = rand(1, 2);
-        if ($rand == 1 || $this->shield) {
+        if ($rand == 1 || $this->hasActiveBuff('shield')) {
             $status = $this->fireball($target);
         } else {
             $status = $this->shield();
@@ -48,18 +48,18 @@ class Mage extends Character
 
     private function shield()
     {
-        $this->shield = true;
+        $this->addBuff('shield', new Buff($this, 1));
 
         return "{$this->name} lance un bouclier magique pour se protéger!";
     }
 
     public function setLifePoints($dmg)
     {
-        if ($this->shield === false) {
-            parent::setLifePoints($dmg);
+        if ($this->hasActiveBuff('shield')) {
+            $this->decrementBuffDuration('shield');
+            return;
         }
-        $this->shield = false;
 
-        return;
+        parent::setLifePoints($dmg);
     }
 }
